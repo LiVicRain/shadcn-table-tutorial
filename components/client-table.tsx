@@ -5,6 +5,16 @@ import { DataTable } from "./data-table";
 import { User } from "@/lib/data";
 import { Checkbox } from "./ui/checkbox";
 import DefaultHeader from "./default-header";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Button } from "./ui/button";
+import { MoreVertical } from "lucide-react";
 
 const columnHelper = createColumnHelper<User>();
 const columns = [
@@ -26,6 +36,8 @@ const columns = [
         aria-label="Select row"
       />
     ),
+    enableSorting: false,
+    enableHiding: false,
   }),
 
   columnHelper.accessor("firstName", {
@@ -47,6 +59,27 @@ const columns = [
   columnHelper.accessor("comments", {
     header: info => <DefaultHeader info={info} name="Comments" />,
     cell: info => info.getValue(),
+  }),
+  columnHelper.display({
+    id: "more",
+    cell: ({ row }) => {
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={"ghost"}>
+              <MoreVertical />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent onCloseAutoFocus={e => e.preventDefault()}>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem className="">Copy</DropdownMenuItem>
+            <DropdownMenuItem className="">Paste</DropdownMenuItem>
+            <DropdownMenuItem className="">Cut</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   }),
 ];
 
